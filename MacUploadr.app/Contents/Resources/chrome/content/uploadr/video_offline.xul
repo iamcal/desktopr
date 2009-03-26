@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<!--
+
+Flickr Uploadr
+
+Copyright (c) 2007-2008 Yahoo! Inc.  All rights reserved.  This library is
+free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License (GPL), version 2 only.  This library is
+distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+GPL for more details (http://www.gnu.org/licenses/gpl.html)
+
+-->
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://uploadr/skin/dialog.css" type="text/css"?>
+<!DOCTYPE window SYSTEM "chrome://uploadr/locale/main.dtd">
+<dialog id="dialog_video_offline" title=""
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml" buttons="accept,cancel,extra1"
+ondialogaccept="window.arguments[5].result = 'ok'; return true;"
+ondialogcancel="window.arguments[5].result = 'cancel'; return true;"
+ondialogextra1="window.arguments[5].result = 'extra1'; window.close();">
+	<script><![CDATA[
+	window.addEventListener('load', function() {
+		var d = document.getElementById('dialog_video_offline');
+
+		// Title
+		document.getElementById('title').firstChild.nodeValue = window.arguments[0];
+		d.title = window.arguments[0];
+
+		// Explanation
+		document.getElementById('explain').firstChild.nodeValue = window.arguments[1];
+
+		// Buttons
+		d.getButton('accept').label = window.arguments[2];
+		d.getButton('cancel').label = window.arguments[3];
+		if ('' == window.arguments[4]) {
+			d.getButton('extra1').style.display = 'none';
+		} else {
+			d.getButton('extra1').label = window.arguments[4];
+		}
+
+		moveToAlertPosition();
+	}, false);
+	]]></script>
+	<html:h3 id="title"> </html:h3>
+	<html:p id="explain"> </html:p>
+</dialog>

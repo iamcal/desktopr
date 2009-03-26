@@ -1,0 +1,45 @@
+
+What the heck is up with these JARs?
+----------------------------------------------------------------------
+
+The JARs in this directory are for XULRunner internal strings - stuff 
+like the extension manager, the automatic update service, etc.
+
+XULRunner doesn't yet ship with non en-US locales for these JARs, but
+it's not as bad as it was, since Firefox 3 Beta 5 ships with 
+everything we need, plus some other junk.
+
+To build the XULRunner locale JARs, we simply take the locale JAR 
+from a Firefox 3 install, e.g.
+
+	C:\Program Files\Mozilla Firefox 3\chrome\ko.jar
+
+We then unpack the JAR and take only the folders inside the
+'locale/ko' folder (for Korean) and copy them into our SVN tree
+at '/xulrunner_locales/locale/ko-kr/'. The build script (build.pl)
+will do the magic to package them all up and create the manifest.
+
+At this time, we're including locale file from Firefox 3 Beta 5. When
+Firefox goes GA, we'll probably want to update these files 
+accordingly to catch any changes.
+
+
+
+Locale mappings
+----------------------------------------------------------------------
+
+Flickr and Mozilla locales don't overlap exactly. Here's how we're 
+currently mapping them.
+
+	Flickr   <->	Moz 
+
+	de-de		de
+	en-US		en-US
+	es-us		es-ES
+	fr-fr		fr
+	it-it		it
+	ko-kr		ko
+	pt-br		pt-BR
+	zh-hk		zh-TW
+
+	ja-jp		ja

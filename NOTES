@@ -1,0 +1,152 @@
+NOTES
+
+
+
+Offer a preference to not create thumbnails in the name of speed
+	Accomplish this with special case param of thumb_size = 0 to gm.thumb
+	This will still return the date taken but will not actually do the thumbing
+
+
+
+In case we ever want to set PROPER EXIF orientation rather than actually rotating pixels,
+here is the C code:
+
+long orient = exif["Exif.Image.Orientation"].toLong();
+if (1 > orient || 8 < orient) {
+	orient = 1;
+}
+switch (orient) {
+	case 1:
+		if (90 == degrees) {
+			orient = 6;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 8;
+		}
+	break;
+	case 2:
+		if (90 == degrees) {
+			orient = 5;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 7;
+		}
+	break;
+	case 3:
+		if (90 == degrees) {
+			orient = 8;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 6;
+		}
+	break;
+	case 4:
+		if (90 == degrees) {
+			orient = 7;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 5;
+		}
+	break;
+	case 5:
+		if (90 == degrees) {
+			orient = 4;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 2;
+		}
+	break;
+	case 6:
+		if (90 == degrees) {
+			orient = 3;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 1;
+		}
+	break;
+	case 7:
+		if (90 == degrees) {
+			orient = 2;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 4;
+		}
+	break;
+	case 8:
+		if (90 == degrees) {
+			orient = 1;
+		} else if (-90 == degrees || 270 == degrees) {
+			orient = 3;
+		}
+	break;
+	default:
+	break;
+}
+exif["Exif.Image.Orientation"] = uint32_t(orient);
+
+
+
+Files changed in my hacked up XULRunner locales
+	locale/xx-xx/global/dialog.properties
+	locale/xx-xx/global/wizard.dtd
+	locale/xx-xx/mozapps/update/*
+
+
+
+Errors building FFmpeg into XPCOM:
+
+ld: common symbols not allowed with MH_DYLIB output format with the -multi_module option
+/usr/local/lib/libavcodec.a(dsputil_mmx.o) definition of common _mm_flags (size 16)
+/usr/local/lib/libavcodec.a(h261.o) definition of common _ff_h261_rl_table_store (size 400)
+/usr/local/lib/libavcodec.a(cabac.o) definition of common _ff_h264_lps_range (size 512)
+/usr/local/lib/libavcodec.a(cabac.o) definition of common _ff_h264_mlps_state (size 256)
+/usr/local/lib/libavcodec.a(mpeg12.o) definition of common _ff_mpeg12_static_rl_table_store (size 784)
+/usr/local/lib/libavcodec.a(msmpeg4data.o) definition of common _ff_msmp4_dc_chroma_vlc (size 32)
+/usr/local/lib/libavcodec.a(msmpeg4data.o) definition of common _ff_msmp4_dc_luma_vlc (size 32)
+/usr/local/lib/libavcodec.a(msmpeg4data.o) definition of common _ff_msmp4_mb_i_vlc (size 16)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_4mv_block_pattern_vlc (size 64)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_ac_coeff_table (size 128)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_bfraction_vlc (size 16)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_cbpcy_p_vlc (size 64)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_imode_vlc (size 16)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_mv_diff_vlc (size 64)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_norm2_vlc (size 16)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_norm6_vlc (size 16)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_subblkpat_vlc (size 48)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_ttblk_vlc (size 48)
+/usr/local/lib/libavcodec.a(vc1data.o) definition of common _ff_vc1_ttmb_vlc (size 48)
+/usr/local/lib/libavcodec.a(msmpeg4.o) definition of common _ff_inter_intra_vlc (size 16)
+/usr/local/lib/libavcodec.a(msmpeg4.o) definition of common _ff_mb_non_intra_vlc (size 64)
+/usr/local/lib/libavcodec.a(cabac.o) definition of common _ff_h264_lps_state (size 128)
+/usr/local/lib/libavcodec.a(cabac.o) definition of common _ff_h264_mps_state (size 128)
+/usr/bin/libtool: internal link edit command failed
+
+
+
+ld: Undefined symbols:
+__Z11img_convertP9AVPictureiPKS_iii
+__Z12avcodec_openP14AVCodecContextP7AVCodec
+__Z13av_read_frameP15AVFormatContextP8AVPacket
+__Z13avcodec_closeP14AVCodecContext
+__Z14avpicture_fillP9AVPicturePhiii
+__Z15av_register_allv
+__Z18av_open_input_filePP15AVFormatContextPKcP13AVInputFormatiP18AVFormatParameters
+__Z18avpicture_get_sizeiii
+__Z19av_close_input_fileP15AVFormatContext
+__Z19av_find_stream_infoP15AVFormatContext
+__Z19avcodec_alloc_framev
+__Z20avcodec_decode_videoP14AVCodecContextP7AVFramePiPhi
+__Z20avcodec_find_decoder7CodecID
+__Z7av_freePv
+__Z9av_mallocj
+
+
+
+Software Update
+
+Partials are broken.  Eh.
+
+
+
+some useful XUL video stuff:
+http://www.sephiroth.it/weblog/archives/2006/10/xul_and_xulrunner_costarring_f.php
+http://xulplayer.sourceforge.net/
+
+
+cal     : i assume there's a good reason why we can't build the xpcom objects in msys/mingw?
+richard : um
+richard : i don't think so but i don't completely understand the compatibility issues between binaries out of visual studio and binaries from msys
+richard : er, mingw's g++

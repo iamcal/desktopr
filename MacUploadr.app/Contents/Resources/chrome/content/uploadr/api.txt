@@ -1,0 +1,7 @@
+add_files([array of file_obj])
+file_obj: {'id':id 'name':file name, 'path':path to file, 'date_created':date created, 'date_modified': date modified}
+
+thumbnail_done(id, thumb_path);
+
+set(id, data)
+get(id, data)

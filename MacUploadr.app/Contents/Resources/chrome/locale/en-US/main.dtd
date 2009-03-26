@@ -1,0 +1,140 @@
+<!--
+
+Flickr Uploadr
+
+Copyright (c) 2007-2009 Yahoo! Inc.  All rights reserved.  This library is
+free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License (GPL), version 2 only.  This library is
+distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+GPL for more details (http://www.gnu.org/licenses/gpl.html)
+
+-->
+
+<!ENTITY title "Flickr Uploadr">
+
+<!ENTITY menu.upload "Upload">
+<!ENTITY menu.upload.add "Add">
+<!ENTITY menu.upload.preferences "Preferences">
+<!ENTITY menu.upload.minimize "Minimize">
+<!ENTITY menu.upload.hide "Hide Flickr Uploadr">
+<!ENTITY menu.upload.exit "Quit">
+<!ENTITY menu.edit "Edit">
+<!ENTITY menu.edit.cut "Cut">
+<!ENTITY menu.edit.copy "Copy">
+<!ENTITY menu.edit.paste "Paste">
+<!ENTITY menu.edit.select_all "Select all">
+<!ENTITY menu.tools "Tools">
+<!ENTITY menu.tools.addons "Add-ons">
+<!ENTITY menu.tools.console "Console">
+<!ENTITY menu.tools.venkman "Venkman">
+<!ENTITY menu.help "Help">
+<!ENTITY menu.help.about "About Flickr Uploadr">
+<!ENTITY menu.help.tips "Tips and Tricks">
+<!ENTITY menu.help.faq "FAQ">
+<!ENTITY menu.help.update "Check for Updates...">
+
+<!ENTITY notloggedin "You're working offline.">
+<!ENTITY login "Sign in">
+<!ENTITY switch "Switch users?">
+
+<!ENTITY auth.confirm "When you've given the Flickr Uploadr permission to connect to your account on the Flickr website, click the big READY! button.">
+<!ENTITY auth.confirm.oops "Give permission again?">
+<!ENTITY auth.alternate "If your browser doesn't open automatically, you can visit this URL, then come back and click the big READY! button.">
+
+<!ENTITY tools.add "+ Add">
+<!ENTITY tools.remove "− Remove">
+<!ENTITY tools.clear "Remove all">
+
+<!ENTITY buttons.upload "Upload">
+<!ENTITY buttons.cancel "Cancel">
+<!ENTITY buttons.auth "Ready!">
+<!ENTITY buttons.ok "OK">
+
+<!ENTITY bandwidth.remaining "Left this month">
+<!ENTITY bandwidth.batch "This batch">
+
+<!ENTITY photostream.title "Your photostream">
+
+<!ENTITY photos.sort.default "Your items are currently ordered by date taken.  Drag and drop to reorder.">
+<!ENTITY photos.sort.revert "Re-sort items by date taken">
+
+<!ENTITY photos.init.text.1 "Or, click ">
+<!ENTITY photos.init.text.2 " to find files on your computer.">
+<!ENTITY photos.init.note "Please note:">
+
+<!ENTITY photos.new "While that batch is uploading, you can start a new one.">
+
+<!ENTITY settings "Settings">
+<!ENTITY settings.notloggedin "You need to sign in to adjust your preferences">
+<!ENTITY settings.users "Authorization:">
+<!ENTITY settings.users.user "Sign in as:">
+<!ENTITY settings.users.remove "Remove selected user">
+<!ENTITY settings.users.add "Add new user">
+<!ENTITY settings.privacy "Default privacy:">
+<!ENTITY settings.privacy.who "Who can see your items?">
+<!ENTITY settings.privacy.private "Only you">
+<!ENTITY settings.privacy.friend "Your friends">
+<!ENTITY settings.privacy.family "Your family">
+<!ENTITY settings.privacy.public "Anyone">
+<!ENTITY settings.content_type "Default content type:">
+<!ENTITY settings.content_type.photo "Photo / Video">
+<!ENTITY settings.content_type.screenshot "Screenshot/Screencast">
+<!ENTITY settings.content_type.other "Other - art, illustration, CGI, etc.">
+<!ENTITY settings.safety_level "Default safety level:">
+<!ENTITY settings.safety_level.safe "Safe">
+<!ENTITY settings.safety_level.moderate "Moderate">
+<!ENTITY settings.safety_level.restricted "Restricted">
+<!ENTITY settings.hidden "Hide from public site areas?">
+<!ENTITY settings.hidden.no "No, don't hide">
+<!ENTITY settings.hidden.yes "Yes, hide">
+<!ENTITY settings.resize "Automatic resizing:">
+<!ENTITY settings.resize.dont "Don't resize my photos">
+<!ENTITY settings.resize.800 "800 pixels (suitable for on-screen viewing)">
+<!ENTITY settings.resize.1280 "1280 pixels (suitable for small prints)">
+<!ENTITY settings.resize.1600 "1600 pixels (suitable for larger prints)">
+<!ENTITY settings.resize.2048 "2048 pixels (best for archiving)">
+<!ENTITY settings.note "Note:">
+<!ENTITY settings.note.text "Your Privacy, Safety and Content-Type settings in Uploadr are separate from your flickr.com settings.">
+
+<!ENTITY meta.single.title "Title:">
+<!ENTITY meta.batch.title "Replace titles:">
+<!ENTITY meta.batch.title.tooltip "Entering a title here will overwrite the titles of selected items.">
+<!ENTITY meta.single.description "Description:">
+<!ENTITY meta.batch.description "Add to existing descriptions:">
+<!ENTITY meta.batch.description.tooltip "Entering a description will append it to the descriptions of selected items.">
+<!ENTITY meta.single.tags "Tags:">
+<!ENTITY meta.batch.tags "Add to existing tags:">
+<!ENTITY meta.tags.tooltip "Separate each tag with a space: cameraphone urban moblog. Or to join 2 words together in one tag, use double quotes: &#34;daily commute&#34;.">
+<!ENTITY meta.content_type "Content type:">
+<!ENTITY meta.safety_level "Safety level:">
+<!ENTITY meta.first "All items are selected">
+<!ENTITY meta.single.sets.add "Add to sets:">
+<!ENTITY meta.batch.sets.add "Add to more sets:">
+<!ENTITY meta.sets.add.none "No sets">
+<!ENTITY meta.sets.create "Create a set...">
+<!ENTITY meta.single.sets.added "This will be added to:">
+<!ENTITY meta.batch.sets.added "These will be added to:">
+<!ENTITY meta.sets.added.none "You haven't selected any sets">
+<!ENTITY meta.hidden "Sign in to see your sets">
+
+<!ENTITY meta.no.prompt "Select an item (or many) to add titles, tags and descriptions or add your items to sets">
+<!ENTITY meta.batch.prompt "You can now replace all titles with a new one, add to existing descriptions, add more tags or add to more sets.">
+
+<!ENTITY dialog.set.title "Create a set">
+<!ENTITY dialog.set.name "Give your new set a name:">
+<!ENTITY dialog.set.description "And a description (optional):">
+
+<!ENTITY dialog.about "About Flickr Uploadr">
+<!ENTITY dialog.about.copyright.yahoo "Copyright © 2007-2009 Yahoo! Inc.  All rights reserved.  This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License (GPL), version 2 only.">
+<!ENTITY dialog.about.copyright.xulrunner "XULRunner is copyright © 2007 Mozilla Foundation.  It is available under the Mozilla Public License, the GNU General Public License, or the GNU Lesser General Public License.">
+<!ENTITY dialog.about.copyright.graphicsmagick "GraphicsMagick is copyright © 2007 GraphicsMagick Group.  It is available under the MIT/X11 License.">
+<!ENTITY dialog.about.copyright.exiv2 "Exiv2 is copyright © 2004-2007 Andreas Huggel.  It is available under the GNU General Public License.">
+<!ENTITY dialog.about.code "Source code available at http://flickr.com/tools/uploadr/.">
+
+<!ENTITY help "Tips and Tricks">
+<!ENTITY help.offline "You can ^^work offline^^.">
+<!ENTITY help.offline.text.first "The Uploadr is designed to let you do much of your photo organization and tagging offline.  Once you're ready to upload to Flickr, sign in to your account, and press the enormous Upload button.">
+<!ENTITY help.offline.text.second "You can be signed in all the time, if you like.  When you're signed in, you can organize your items into sets.">
+<!ENTITY help.drag "^^Drag and drop^^ is your friend.">
+<!ENTITY help.drag.text "You can drag items into the order that you'd like them to appear on your photostream page when they're uploaded.  If you need to, you can also reset any arrangement you make so the items go back to being ordered by the date they were taken.">
+<!ENTITY help.faq "If you have more questions, please visit our ^^Uploadr FAQ^^">

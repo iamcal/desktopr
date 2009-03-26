@@ -1,0 +1,21 @@
+<!DOCTYPE overlay SYSTEM "chrome://uploadr/locale/main.dtd">
+<overlay id="overlay_keyboard"
+xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+xmlns:html="http://www.w3.org/1999/xhtml">
+	<keyset id="key">
+		<key id="key_prefs" modifiers="accel" key=","
+			oncommand="settings.show();" />
+		<key id="key_help_fake" modifiers="accel" key="/"
+			oncommand="menu.help.tips();" />
+		<key id="key_help" modifiers="accel" key="?"
+			oncommand="menu.help.tips();" />
+		<key id="key_quit" modifiers="accel" key="q"
+			oncommand="exit();" />
+    <key id="key_hide" modifiers="accel" key="h" oncommand="window.hide();" />
+    <key id="key_minimize" modifiers="accel" key="m" oncommand="window.minimize();" />
+	</keyset>
+  <menupopup id="menu_UploadPopup">
+    <menuitem id="menu_minimize" label="&menu.upload.minimize;" key="key_minimize" oncommand="window.minimize();" position="3" />
+    <menuitem id="menu_mac_hide_app" label="&menu.upload.hide;" key="key_hide" oncommand="window.hide();" position="4"/>
+  </menupopup>
+</overlay>

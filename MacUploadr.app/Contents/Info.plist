@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+Flickr Uploadr
+
+Copyright (c) 2007-2008 Yahoo! Inc.  All rights reserved.  This library is
+free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License (GPL), version 2 only.  This library is
+distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+GPL for more details (http://www.gnu.org/licenses/gpl.html)
+
+-->
+<!DOCTYPE plist PUBLIC "-//Apple Computer//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>CFBundleDevelopmentRegion</key>
+	<string>English</string>
+	<key>CFBundleExecutable</key>
+	<string>xulrunner</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeExtensions</key>
+			<array>
+				<string>jpeg</string>
+				<string>JPEG</string>
+				<string>jpg</string>
+				<string>JPG</string>
+				<string>png</string>
+				<string>PNG</string>
+				<string>gif</string>
+				<string>GIF</string>
+				<string>tiff</string>
+				<string>TIFF</string>
+				<string>tif</string>
+				<string>TIF</string>
+				<string>mp4</string>
+				<string>MP4</string>
+				<string>mpeg</string>
+				<string>MPEG</string>
+				<string>mpg</string>
+				<string>MPG</string>
+				<string>avi</string>
+				<string>AVI</string>
+				<string>wmv</string>
+				<string>WMV</string>
+				<string>mov</string>
+				<string>MOV</string>
+				<string>dv</string>
+				<string>DV</string>
+				<string>3gp</string>
+				<string>3GP</string>
+				<string>3g2</string>
+			</array>
+			<key>CFBundleTypeOSTypes</key>
+			<array>
+				<string>GIF </string>
+				<string>JPEG</string>
+				<string>PNG </string>
+				<string>TIFF</string>
+				<string>MPEG</string>
+				<string>MPG </string>
+				<string>AVI </string>
+				<string>WMV </string>
+				<string>MOV </string>
+				<string>DV  </string>
+				<string>3GP </string>
+			</array>
+			<key>CFBundleTypeRole</key>
+			<string>Viewer</string>
+		</dict>
+	</array>
+	<key>CFBundleGetInfoString</key>
+	<string>Flickr Uploadr 3.1, (c) Yahoo!, Inc.</string>
+	<key>CFBundleIdentifier</key>
+	<string>com.flickr.uploadr</string>
+	<key>CFBundleInfoDictionaryVersion</key>
+	<string>6.0</string>
+	<key>CFBundleName</key>
+	<string>Flickr Uploadr</string>
+	<key>CFBundlePackageType</key>
+	<string>APPL</string>
+	<key>CFBundleShortVersionString</key>
+	<string>3.1</string>
+	<key>CFBundleSignature</key>
+	<string>FLUP</string>
+	<key>CFBundleIconFile</key>
+	<string>icons.icns</string>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>Flickr Uploadr</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>chrome</string>
+			</array>
+		</dict>
+	</array>
+	<key>CFBundleVersion</key>
+	<string>3.1</string>
+</dict>
+</plist>

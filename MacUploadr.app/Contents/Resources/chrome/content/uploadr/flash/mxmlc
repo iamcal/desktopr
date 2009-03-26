@@ -1,0 +1,12 @@
+#!/bin/sh
+
+#
+# mxmlc launch script for Mac / Linux
+# You will of course want to change the paths below to be relevant to your machine.
+# This file should be in the same dir as Player.as and is called like so "./mxmlc Player.as"
+# which will produce player.swf
+#
+
+VMARGS="-Xmx384m -Dsun.io.useCanonCaches=false"
+
+java $VMARGS -jar "/Users/ericcostello/apps/flex2_sdk_hf1/lib/mxmlc.jar" +flexlib="/Users/ericcostello/apps/flex2_sdk_hf1/frameworks" -as3 -default-frame-rate=10 -load-config flex-config.xml $* 

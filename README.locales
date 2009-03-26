@@ -1,0 +1,83 @@
+
+Locale handling
+------------------------------------------------------------------------
+
+The Flickr Uploadr has official builds for the following locales:
+
+	en-US	US English
+	de-de	German
+	es-us	Spanish
+	fr-fr	French
+	it-it	Italian
+	ko-kr	Korean
+	pt-br	Portuguese
+	zh-hk	Traditional Chinese
+
+
+
+If you want to translate the Uploadr into another language, there
+are several files that you'll need to edit. To customize the 
+Flickr-specific strings, you'll need to edit these files:
+
+/MacUploadr.app/Contents/Resources/chrome/locale/en-US/main.dtd
+/MacUploadr.app/Contents/Resources/chrome/locale/en-US/main.properties
+/MacUploadr.app/Contents/Resources/chrome/locale/en-US/proxy.dtd
+
+for an example, see the Korean versions:
+
+/MacUploadr.app/Contents/Resources/chrome/locale/ko-kr/main.dtd
+/MacUploadr.app/Contents/Resources/chrome/locale/ko-kr/main.properties
+/MacUploadr.app/Contents/Resources/chrome/locale/ko-kr/proxy.dtd
+
+The proxy.dtd file is based on two files from the Firefox 2 locale bundle:
+
+{$locale.jar}/locale/browser/preferences/connection.dtd
+{$locale.jar}/locale/browser/preferences/advanced.dtd
+
+(Only the last 3 strings come from advanced.dtd, all the rest are from 
+conenction.dtd)
+
+You can get hold of this inside the language JAR of a Firefox 2 or 3
+install (inside the 'chrome' folder) to avoid having to translate the 
+strings yourself.
+
+
+
+XULRunner also contains some non-flickr-specific strings which need 
+translating. The versions for currently supported languages can be 
+found here:
+
+/xulrunner_locales/locale/
+
+And instructions for how to create and build these bundles can be found 
+here:
+
+/xulrunner_locales/README
+
+
+
+At this time, we're not making final builds available in other 
+locales, but this may change in the near future if we get 
+interest. If we do, we'll need to get a version of the XULRunner 
+bundle for that locale into SVN.
+
+To submit community translations, start a topic in the forum:
+
+http://flickr.com/groups/hackinguploadr/
+
+
+
+Translations (by richard)
+------------------------------------------------------------------------
+
+I've just been pulling the translated DTD and PROPERTIES files from a
+production WWW server and running them through strings_import.php.
+
+Note that in the German translation, the help page is messed up because
+they insist on removing the ^^ wrappers around some sections of the
+text.  Replace these or you'll see "undefined" in several places in the
+UI.
+
+Also note that " must be escaped with &#34;.  This led me to believe
+that & could be escaped with &#38; but this is not the case.  Don't
+use & in the main.dtd files - spell out "and" instead.

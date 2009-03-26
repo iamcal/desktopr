@@ -1,0 +1,376 @@
+Flickr Uploadr
+
+Copyright (c) 2007-2008 Yahoo! Inc.  All rights reserved.  This library is
+free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License (GPL), version 2 only.  This library is
+distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+GPL for more details (http://www.gnu.org/licenses/gpl.html)
+
+------------------------------------------------------------------------
+
+This guide uses UPLOADR to indicate the root of the Flickr Uploadr
+source tree on your filesystem.  It probably shouldn't contain spaces
+(C:\Documents and Settings\you\My Documents\Flickr Uploadr is probably
+a bad idea).
+
+On Windows, you must use the MSys bash shell to build Uploadr.  Cygwin
+is not supported.  Instructions for getting your MSys environment setup
+are included below.
+
+You can obtain the Flickr Uploadr source code from either a tarball or
+from Subversion.
+
+Download tarball:
+  http://flickr.com/tools/uploadr/
+
+Checkout from Subversion:
+  $ svn co http://code.flickr.com/svn/trunk/uploadr UPLOADR
+
+
+Windows Build Environment
+------------------------------------------------------------------------
+
+If you're planning on building the third party libraries on windows 
+(graphics magick, exiv2, ffmepg) then you'll need to have MS Visual C++
+version 8 or greater installed. Version 7 will work for the third party
+libraries themselves, but version 8 is required for building the final
+DLLs.
+
+To build the installers and such, you'll need to install MSYS. Start 
+by going here:
+
+http://sf.net/project/showfiles.php?group_id=2435
+
+Choose 'MSYS Base System', then find the file called something like
+'msysCORE-1.0.11-2007.01.19-1.tar.bz2'. Unzip this (get WinRaR if you
+can't open it) and put it at C:\msys
+
+Download the following files from the 'MSYS Base System' page:
+
+    MSYS-1.0.11-20071204.tar.bz2
+    bash-3.1-MSYS-1.0.11-1.tar.bz2
+    coreutils-5.97-MSYS-1.0.11-snapshot.tar.bz2
+
+And download these file from the 'MSYS Supplementary Tools' page:
+
+    perl-5.6.1-MSYS-1.0.11-1.tar.bz2
+    crypt-1.1-1-MSYS-1.0.11-1.tar.bz2
+
+Version numbers may be higher. Unzip them into the same folder as 
+MSYS, overwriting any existing duplicate files.
+
+When you launch MSYS via the batch file in its root folder, you should 
+be able to type 'perl -v' and get a Perl banner if all went well.
+
+Follow these steps to get MSYS working with Visual Studio:
+
+http://ffmpeg.arrozcru.com/ffmpeg_wiki/tiki-index.php?page=Fixing+msys
+
+From the same download page, download the following packages:
+
+  From the MinGW Runtime section:
+      mingwrt-3.15-mingw32-dev.tar.gz
+
+  From the GNU Binutils section:
+      binutils-2.18.50-20080109-2.tar.gz
+
+  From the MinGW API for MS-Windows section:
+      w32api-3.11.tar.gz (because of http://archives.free.net.ph/message/20080910.160811.a4295713.en.html, not using 3.12 yet)
+
+  From the GCC Version 4 / Technology Preview: gcc-4.2.1-sjlj-2 section:
+      gcc-core-4.2.1-sjlj-2.tar.gz
+      gcc-g++-4.2.1-sjlj-2.tar.gz
+
+Unpack each package into C:\msys\mingw then go to C:\msys\mingw\bin\ and 
+rename:
+
+  c++-sjlj.exe to c++.exe
+  cpp-sjlj.exe to cpp.exe
+  g++-sjlj.exe to g++.exe
+  gcc-sjlj.exe to gcc.exe
+
+Make sure you have C:\msys\mingw\lib\crt2.o (comes from MinGW Runtime section)
+
+Follow these instructions to make mingw work with msys:
+
+http://ffmpeg.arrozcru.com/ffmpeg_wiki/tiki-index.php?page=Integrating+MinGW+with+MSys
+
+You probably already have an SVN client, but if not, you can grab the
+commandline one from here:
+
+  http://subversion.tigris.org/servlets/ProjectDocumentList?folderID=91
+  svn-1.4.6-setup.exe (or a more recent version)
+
+Once installed, typing 'svn --version' from a fresh MSYS shell should give 
+you a version banner.
+
+Next you'll need a zip utility. Grab this zip file:
+
+  ftp://ftp.info-zip.org/pub/infozip/WIN32/zip232xN.zip
+
+And copy zip.exe into msys/bin. Ok, all ready!
+
+
+XULRunner
+------------------------------------------------------------------------
+
+XULRunner trunk builds:
+  ftp://ftp.mozilla.org/pub/mozilla.org/xulrunner/nightly/latest-trunk/
+
+Note: You want the version *without* 'sdk' in the name.
+
+
+Download a version of XULRunner trunk and unzip it into:
+  UPLOADR/MacUploadr.app/Contents/Resources/
+
+The XULRunner files (e.g. xulrunner.exe) should now be here:
+  UPLOADR/MacUploadr.app/Contents/Resources/xulrunner/
+
+Make sure you unzip the file keeping directory paths intact. There should
+be several folders inside the 'xulrunner' folder, including 'chrome',
+'components', etc.
+
+
+Gecko SDK
+------------------------------------------------------------------------
+
+To build the XPCOM components you will need the Gecko SDK:
+  http://developer.mozilla.org/en/docs/Gecko_SDK#Downloading
+
+Place the SDK here:
+  UPLOADR/MacUploadr.app/Contents/Resources/xulrunner-sdk
+
+These SDKs are from the Gecko 1.9 series and so are only safe to use
+if the XPCOM components use only frozen interfaces.  Fortunately,
+Uploadr currently falls into this category.
+
+
+You'll also need bits from Mozilla's Wintools:
+  http://ftp.mozilla.org/pub/mozilla.org/mozilla/source/wintools.zip
+
+Extract that and copy glib-1.2.dll and libIDL-0.6.dll from
+wintools/buildtools/windows/bin/x86/ to your xulrunner-sdk/sdk/bin/ directory.
+
+
+
+API Keys
+------------------------------------------------------------------------
+
+You'll need your own API key and secret from Flickr to build Uploadr.
+These can be obtained at http://flickr.com/services/api/.  The key
+and secret must be placed in flKey.cpp in the spaces provided. Copy
+flKey.cpp.template to flKey.cpp and insert your keys:
+
+  UPLOADR/MacUploadr.app/Contents/Resources/components/flKey.cpp.template
+  UPLOADR/MacUploadr.app/Contents/Resources/components/flKey.cpp
+
+The API key is stored as a string.  The secret is stored as individual
+characters so it is not easily readable from the binary.
+
+There are blocks to keep both a Windows and Mac key/secret in the same
+source file (you certainly don't have to, though).  This is mainly
+important for the official builds.
+
+
+
+GraphicsMagick
+------------------------------------------------------------------------
+
+Download GraphicsMagick Windows SOURCE:
+  ftp://ftp.graphicsmagick.org/pub/GraphicsMagick/windows/
+
+You'll need MS Visual C++ to build GraphicsMagick. We've built it 
+sucessfully using VC++ 7 and 8, but other versions may work fine.
+
+Go to the VisualMagick/configure directory of the GraphicsMagick Windows
+source directory.  Open configure.vcproj in Visual Studio and edit the 
+project configuration:
+
+  o Set the active configuration to "Release"
+  o Change the Use of MFC under Configuration Properties > General to
+    "Use MFC in a Static Library"
+  o Change the Runtime Library under Configuration Properties > C/C++ >
+    Code Generation to "Multi-threaded (/MT)"
+
+Build the project and then run the configuration program (called 
+configure.exe, in the same folder as the .vcproj file). Select "Static
+Multi-threaded runtimes" and otherwise accept the defaults.  This will
+create your solution (project file) for Visual Studio in the root
+GraphicsMagick folder. It should be called 'VisualStaticMT.sln'.
+
+Open the solution and let Visual Studio 8 have its way with the Visual
+Studio 7 solution file.  Edit the project configuration:
+
+  o Set the active configuration to "Release" for 'All'
+  o Change the Runtime Library for the CORE_Magick++ project under
+    Configuration Properties > C/C++ > Code Generation to
+    "Multi-threaded DLL (/MD)"
+  o Tell all of the CORE_* projects to optimize for speed under
+    Configuration Properties > C/C++ > Optimization
+    (Optimization: "Maximize Speed /O2")
+
+Build it to see where the problems are.  As of 1.1.8, 18 out of 20
+projects build properly.  The two that do not are utilities that are
+extraneous.  In 1.1.7, the errors that will likely show up in a
+try/catch block can be fixed by changing "exception" to "std::exception"
+and adding "&" to make all of the catches happen by reference.  The
+official builds are build with 1.1.10 and will soon move to 1.1.11.
+build 1.2.5 builds all the CORE_* projects fine
+
+You can verify that enough of it built correctly by checking in the 
+VisualMagick\lib directory. There should be a .lib file for each 
+CORE_* project.
+
+Add the path to your GraphicsMagick build's VisualMagick\lib directory
+to your library path.  Add the path to VisualMagick\include (JDE --- 
+GraphicsMagick-1.2.5 does not have an include dir, but C:\Source\UPLOADR\GraphicsMagick-1.2.5\magick maybe)
+to your include path.
+
+The magic.mgk, modules.mgk and delegates.mgk files must be in the root of
+the application (next to application.ini).  These files are included in
+the tarball and Subversion checkouts, so you shouldn't have to worry. You
+can otherwise find them in the VisualMagick\bin directory.
+
+
+Exiv2
+------------------------------------------------------------------------
+
+Download Exiv2 source from:
+  http://exiv2.org/download.html
+
+Download and install Expat for Windows:
+  http://sourceforge.net/project/showfiles.php?group_id=10127
+
+Open up the solution file at 'msvc\exiv2.sln'. Just like GraphicsMagick, 
+let Visual Studio 8 eat the 7.1 project files. Edit the project 
+configuration:
+
+  o Disable every project in the Exiv2 solution except exiv2lib and xmpsdk
+    (Use the configuration manager and uncheck the boxes)
+  o Change the Runtime Library for remaining projects under
+    Configuration Properties > C/C++ > Code Generation to
+    "Multi-threaded DLL (/MD)"
+  o Set remaining projects to their Release state
+  o Modify the xmpsdk project:
+      o Change Configuration Properties > C/C++ > General >
+        Additional Include Directories to (all one line):
+        "..\..\..\expat-2.0.1\lib;..\..\xmpsdk\src;..\..\xmpsdk\include;"
+        "C:\Program Files\Expat 2.0.1\Source\lib"
+        (the last path portion might be different, depending on where
+        you install expat).
+      o Change Configuration Properties > Librarian > General >
+        Additional Dependencies to "libexpat.lib"
+      o Change Configuration Properties > Librarian > General >
+        Additional Library Directories to:
+        "$(SolutionDir)/lib";"C:\Program Files\Expat 2.0.1\Bin"
+  o Modify the exiv2lib project:
+      o Change Configuration Properties > Librarian > General >
+        Link Library Dependencies to "Yes" (VC7 doesn't seem to have 
+        this option - just skip it)
+      o Change Configuration Properties > C/C++ > General >
+        Additional Include Directories to:
+        "..\..\src;..\..;..\..\xmpsdk\include"
+
+You should now be able to build the solution. It should produce the
+following files:
+
+        msvc\exiv2lib\Release\exiv2.lib
+        msvc\xmpsdk\Release\xmpsdk.lib
+
+Copy libexpat.dll from "C:\Program Files\Expat 2.0.1\Bin" to
+"UPLOADR\MacUploadr.app\Contents\Resources".
+
+
+FFmpeg
+------------------------------------------------------------------------
+
+FFmpeg will not build in Visual Studio but can be linked by Visual
+Studio, so we'll need to use MSys/WinGW.
+
+--- I'm dubious that we need to install anything extra here [CAL]
+--- But i need to wait until i actually get gm.dll linking
+--- Additionally add in dependencies like zlib: (got it from zlib-1.2.3-MSYS-1.0.11-1.tar.bz2 from the MSYS supplementary tool download URL)
+---   http://wiki.videolan.org/Win32CompileMSYS
+
+Check out and build the most recent version of FFmpeg:
+(handy hint: Shift+Insert pastes into the MSYS shell)
+
+  $ svn co svn://svn.mplayerhq.hu/ffmpeg/trunk ffmpeg
+  $ cd ffmpeg
+  $ ./configure --disable-ffserver --disable-ffplay --enable-gpl \
+    --enable-memalign-hack --enable-static --disable-shared \
+    --disable-debug --enable-swscale
+
+The lastest version of FFmpeg is kinda broken on windows and needs
+to be built one library at a time,. This should do the trick:
+ --- JDE : Note = with trunk from 09/17/08, make just works
+BUT
+had to patch MinGW as described at http://ffmpeg.arrozcru.org/wiki/index.php?title=MSys_MinGW
+and commented out the #include <sys/select.h>
+
+  $ cd libswscale && make && cd ..
+  $ cd libavdevice && make && cd ..
+  $ cd libavformat && make && cd ..
+  $ cd libavcodec && make && cd ..
+  $ cd libavutil && make && cd ..
+  $ make
+
+make install on windows doesn't work for FFmpeg trunk at the moment.
+that may or may not be a problem...
+
+The Uploadr Visual Studio project is setup to expect the MinGW bits for
+linking FFmpeg into the flGM XPCOM object.
+
+
+Building XPCOM components
+------------------------------------------------------------------------
+
+If you make any changes to the IDL files defining the XPCOM interfaces,
+you must increment the BuildID defined in:
+  UPLOADR/MacUploadr.app/Contents/Resources/application.ini
+
+Use the Visual Studio projects in:
+  UPLOADR/MacUploadr.app/Contents/Resources/components/*.vcproj
+
+Modify project properties to use your paths to GraphicsMagick and exiv2-0.17.1
+
+The two projects will generate gm.dll and key.dll.
+
+
+Running Flickr Uploadr
+------------------------------------------------------------------------
+
+Copy xulrunner-stub.exe from the xulrunner/ directory into the root
+of your app, UPLOADR/MacUploadr.app/Contents/Resources/, rename it to
+"Flickr Uploadr.exe" and double-click it to run Uploadr.
+you also need to change the resource of this file to use the flickr uploadr icon.
+You can use XN Resource editor from http://www.wilsonc.demon.co.uk/d10resourceeditor.htm
+
+You can hack the icons.ico file into the executable using Resource
+Hacker:
+  http://angusj.com/resourcehacker/
+
+Create a shortcut to this executable and append the "-console
+-jsconsole" parameters to launch Uploadr with both debug windows open.
+
+
+Packaging
+------------------------------------------------------------------------
+
+Windows installers are created using NSIS, specifically the Unicode
+version available here:
+  http://www.scratchpaper.com/
+
+Building the NSIS package will likely fail if you do not have Visual
+Studio 8 installed.  The installer references vcredist_x86.exe.  For
+controlled experimentation it is OK to omit this installation step by
+commenting line 110 in UPLOADR/windows_install_build.nsi.
+
+One-command builds in MSys for all eight languages:
+  $ make win all
+
+Or to build a single language:
+  $ make win packaging en-US
+
+If you do not want to create update files (see README.updates):
+  $ make win all-build

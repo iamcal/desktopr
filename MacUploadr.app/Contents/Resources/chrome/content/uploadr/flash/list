@@ -1,0 +1,59 @@
+flickr.favorites.getList
+flickr.favorites.getPublicList
+flickr.groups.pools.getPhotos
+
+
+
+flickr.photosets.getPhotos
+flickr.groups.pools.getPhotos
+					
+} else if (vars.set_id) { // A SET
+
+this.callAPI('flickr.photosets.getPhotos', {extras:api_extras, photoset_id:vars.set_id, per_page:per_page, page:page, jump_to:jump_to}, !this.started);
+
+} else if (vars.tags) { // PHOTOS TAGGED WITH X
+
+var tag_mode = (vars.tag_mode == 'any') ? 'any' : 'all';
+
+if (vars.group_id) { // IN A GROUP POOL
+
+	this.callAPI('flickr.groups.pools.getPhotos', {extras:api_extras, group_id:vars.group_id, tags:vars.tags, tag_mode:tag_mode, per_page:per_page, page:page, jump_to:jump_to}, !this.started);
+
+} else { // EVERYONE'S OR ONE PERSONS
+
+	if (vars.user_id) { // ONE PERSONS
+		this.callAPI('flickr.photos.search', {extras:api_extras, user_id:vars.user_id, tags:vars.tags, tag_mode:tag_mode, per_page:per_page, page:page, jump_to:jump_to, sort:vars.sort}, !this.started);
+	} else {
+		this.callAPI('flickr.photos.search', {extras:api_extras, tags:vars.tags, tag_mode:tag_mode, per_page:per_page, page:page, sort:vars.sort}, !this.started);
+	}
+}
+
+} else if (vars.text) { // RESULT OF A SEARCH
+
+if (vars.user_id) { // ONE PERSONS
+	this.callAPI('flickr.photos.search', {extras:api_extras, user_id:vars.user_id, text:vars.text, per_page:per_page, page:page, jump_to:jump_to, sort:vars.sort}, !this.started);
+} else {
+	this.callAPI('flickr.photos.search', {extras:api_extras, text:vars.text, per_page:per_page, page:page, sort:vars.sort}, !this.started);
+}
+
+} else if (vars.user_id) { // A STREAM
+
+//console('vars.single '+vars.single)
+var single_photo = (vars.single == 'y') ? 1 : 0 ;
+if (vars.frifam == 'y') { // A PERSON'S FRIEND AND FAMILY ONLY STREAM
+	this.callAPI('flickr.photos.getContactsPublicPhotos', {extras:api_extras, user_id:vars.user_id, just_friends:1, single_photo:single_photo, count:per_page}, !this.started);
+} else if (vars.contacts == 'y') { // A PERSON'S CONTACTS ONLY STREAM 
+	this.callAPI('flickr.photos.getContactsPublicPhotos', {extras:api_extras, user_id:vars.user_id, single_photo:single_photo, count:per_page, jump_to:jump_to}, !this.started);
+} else { // A PERSON'S STREAM
+	this.callAPI('flickr.photos.search', {extras:api_extras, user_id:vars.user_id, per_page:per_page, page:page, jump_to:jump_to, sort:vars.sort}, !this.started);
+}
+
+} else if (vars.group_id) { // A POOL
+
+this.callAPI('flickr.groups.pools.getPhotos', {extras:api_extras, group_id:vars.group_id, per_page:per_page, page:page, jump_to:jump_to}, !this.started);
+
+} else { // EVERYONE'S PHOTOS
+
+this.callAPI('flickr.photos.getRecent', {extras:api_extras, user_id:vars.user_id, per_page:per_page, page:page}, !this.started);
+
+}

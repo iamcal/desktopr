@@ -1,0 +1,20 @@
+/*
+ * Flickr Uploadr
+ *
+ * Copyright (c) 2007-2009 Yahoo! Inc.  All rights reserved.  This library is
+ * free software; you can redistribute it and/or modify it under the terms of
+ * the GNU General Public License (GPL), version 2 only.  This library is
+ * distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+ * GPL for more details (http://www.gnu.org/licenses/gpl.html)
+ */
+
+
+#about-dialog {
+	width: 500px;
+}
+
+#about-logo {
+	width: 120px;
+	margin: 15px 0 0 0;
+	background: url(logo_flickr.png) no-repeat;
+}

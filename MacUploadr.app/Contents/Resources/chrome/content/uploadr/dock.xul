@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<!--
+
+Flickr Uploadr
+
+Copyright (c) 2007-2008 Yahoo! Inc.  All rights reserved.  This library is
+free software; you can redistribute it and/or modify it under the terms of
+the GNU General Public License (GPL), version 2 only.  This library is
+distributed WITHOUT ANY WARRANTY, whether express or implied. See the GNU
+GPL for more details (http://www.gnu.org/licenses/gpl.html)
+
+-->
+<window xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+id="dock" title="" width="0" height="0">
+	<script src="chrome://global/content/nsUserSettings.js" />
+	<script><![CDATA[
+	window.addEventListener('load', function() {
+
+		// This is a hacked handler for drags that happen after the app
+		// was opened
+		//   It prevents clobbering photos by strict ordering in the event
+		//   queue, but it enables upload too early and therefore can cause
+		//   problems
+
+		if (window.arguments && window.arguments[0]){
+			const Cc = Components.classes;
+			const Ci = Components.interfaces;
+
+			// Get the main window
+			var singleton = nsPreferences.copyUnicharPref(
+				'toolkit.singletonWindowType');
+			var mediator = Cc['@mozilla.org/appshell/window-mediator;1']
+				.getService(Ci.nsIWindowMediator);
+			var win = mediator.getMostRecentWindow(singleton);
+
+			// Add this photo, converting file:// URL to a native path
+			var arg = window.arguments[0];
+			if (win) {
+				win.threads.worker.dispatch(new win.PhotoAdd(arg),
+					win.threads.worker.DISPATCH_NORMAL);
+				window.close();
+				win.focus();
+			}
+
+		}
+	}, false);
+	]]></script>
+</window>

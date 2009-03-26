@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head>
+    <title>Untitled Page</title>
+</head>
+<body>
+<img id="testImage" src="" width="50" height="50"/>
+<input value="image Fill" type="button" onclick="fillImage();" />
+<script type="text/ecmascript" language="jscript" >
+function fillImage() {
+var test = escape("C:\\Documents and Settings\\jdecq\\Application Data\\Flickr\\Flickr Uploadr\\Profiles\\nqdgl4yz.default\\images\\DSC_013_#_1-thumb.JPG");
+document.getElementById("testImage").setAttribute("src", "file:///" + test);
+};
+</script>
+
+</body>
+</html>

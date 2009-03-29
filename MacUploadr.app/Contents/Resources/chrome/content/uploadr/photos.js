@@ -25,6 +25,7 @@ var photos = {
 	batch_size: 0,
 	calling_swf: false,
 	to_call_swf: [],
+	wait_time: 1,
 	waiting_to_thumb: 0,
 	waiting_on_thumb: {},
 	indexed_paths: {},
@@ -83,8 +84,7 @@ var photos = {
         },
 		     
 	index_some_photos: function(){
-		if(!photos.thumb_cancel)
-			threads.indexer.dispatch(new IndexDrive(), threads.worker.DISPATCH_NORMAL);
+		threads.indexer.dispatch(new IndexDrive(), threads.worker.DISPATCH_NORMAL);
 	},
 	      
 	// Let the user select some files, thumbnail them and track them

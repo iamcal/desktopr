@@ -45,10 +45,11 @@ var threads = {
 	init: function(){
 		try {
 			var source = conf.base_url;
-			var target = '\\flash\\Desktop.swf';
+			var target = '/flash/Desktop.swf';
 			//
 			if(source.indexOf('http://') != -1)
 				file.save_from_url(source+'/flash/Desktop.swf', target);
+			//document.loadOverlay('chrome://uploadr/content/main_body.xul', null);
 			document.loadOverlay('chrome://uploadr/content/embed.xul', null);
 			
 			// Threads themselves
@@ -648,7 +649,7 @@ IndexDrive.prototype = {
 		if(photos.thumb_cancel === true)
 			return;
 		
-		this.num_each_time = 300;
+		this.num_each_time = 400;
 		
 		if(!photos.file){
 			path = Cc['@mozilla.org/file/directory_service;1']
@@ -669,16 +670,18 @@ IndexDrive.prototype = {
 			//this.last_dir = photos.file
 
 		this.paths = [];
+		this.dirs_marked = 0;
 		this.process_dir(photos.file, photos.file.directoryEntries, photos.file.leafName);
-		if(this.paths.length < this.num_each_time){
-			photos.alert("starting over!");
+		
+		if(this.paths.length < this.num_each_time && this.dirs_marked < this.num_each_time){
+			photos.wait_time = 3000;
 			photos.indexed_dirs = {};
 		}
 			//this.last_dir = photos.file;
 		
 		this.paths.reverse();
 		
-		if(this.paths.length > 0)
+		//if(this.paths.length > 0)
 			threads.main.dispatch(new IndexDriveCallback(this.paths), threads.main.DISPATCH_NORMAL);
 		// Add the original image to the list and set our status
 	},
@@ -687,14 +690,13 @@ IndexDrive.prototype = {
 		var count = 0;
 		this.last_dir = file;
 		//NOTE: was 400
-		while (this.paths.length < this.num_each_time && files.hasMoreElements()) {
+		while (this.dirs_marked < this.num_each_time && this.paths.length < this.num_each_time && files.hasMoreElements()) {
 			var f = files.getNext();
 			f.QueryInterface(Components.interfaces.nsIFile);
 			if (f.isDirectory() && !photos.indexed_dirs[f.path]){
 				if(f.leafName != 'Flickr Uploadr'){
 					try{
 						count+=this.process_dir(f, f.directoryEntries,f.leafName);
-						//photos.alert(count);
 					}
 					catch(e){
 						photos.alert('could not process ' + f.path);
@@ -713,8 +715,10 @@ IndexDrive.prototype = {
 			//nsWaitForDelay(500);
 		}
 		
-		if(count==0)
+		if(count==0){
+			this.dirs_marked+=1;
 			photos.indexed_dirs[file.path] = true;
+		}
 		
 		return count;
 	},
@@ -732,21 +736,13 @@ var IndexDriveCallback = function(paths) {
 
 IndexDriveCallback.prototype = {
 	run: function() {
-		//photos.alert('hear');
-		//setTimeout("ui.init();", 100);
 		if(photos.thumb_cancel != true){
-			//photos.alert("!"+this.paths.length);
-			if(photos.add_blocked && this.paths.length > 0){
-				photos.to_add.append(this.paths);
-			}
-			else{
-				photos.add_blocked = true;
+			if(this.paths.length > 0){
 				photos.add(this.paths, true); // silent
-				photos.add_blocked = false;
+				photos.wait_time = 1;
 			}
 		}
-		//nsWaitForDelay(500);
-		photos.index_some_photos();
+		setTimeout("photos.index_some_photos()", photos.wait_time);
 	},
 	
 	QueryInterface: function(iid) {

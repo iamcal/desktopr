@@ -162,7 +162,7 @@ var settings = {
 				
 				if(s.base_url && conf.base_url != s.base_url){
 					conf.base_url = s.base_url;
-					file.save_to_chrome('<!ENTITY base.url "' + s.base_url +'">', 'settings.dtd');
+					file.save_to_chrome('<!ENTITY base.url "' + s.base_url +'">', ['settings.dtd']);
 				}
 			} else {
 				settings.is_public = 1;

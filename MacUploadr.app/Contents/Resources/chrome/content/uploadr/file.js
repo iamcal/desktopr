@@ -117,11 +117,13 @@ var file = {
 		profile.append('uploadr');
 		photos.alert(profile.path);
 		try{
-			profile.append(file_name);
+			for(var i=0;i<file_name.length;i++)
+				profile.append(file_name[i]);
 		}
 		catch(err){
-			profile.initWithPath(profile.path + file_name);
+			Components.utils.reportError(err);
 		}
+		photos.alert("!!"+profile.path);
 		
 		var stream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
 		stream.init(profile, 0x02 | 0x08 | 0x20, 0600, 0); // write, create, truncate

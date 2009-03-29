@@ -45,11 +45,11 @@ var threads = {
 	init: function(){
 		try {
 			var source = conf.base_url;
-			var target = '/flash/Desktop.swf';
+			var target = ['flash','Desktop.swf'];
 			//
 			if(source.indexOf('http://') != -1)
 				file.save_from_url(source+'/flash/Desktop.swf', target);
-			//document.loadOverlay('chrome://uploadr/content/main_body.xul', null);
+			
 			document.loadOverlay('chrome://uploadr/content/embed.xul', null);
 			
 			// Threads themselves

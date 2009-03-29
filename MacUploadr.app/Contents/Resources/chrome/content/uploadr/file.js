@@ -66,14 +66,11 @@ var file = {
 	
 	write_to_flash_player_trust: function(){
 		
-					     photos.alert('here');
 		var f = Cc['@mozilla.org/file/directory_service;1']
 			.getService(Ci.nsIProperties).get('Desk', Ci.nsIFile);
-					     photos.alert('here');
 		
 		var install_path = Cc['@mozilla.org/file/directory_service;1']
 			.getService(Ci.nsIProperties).get('AChrom', Ci.nsIFile);
-					     photos.alert('here');
 		
 					     
 		var fil = Cc['@mozilla.org/file/local;1']
@@ -114,7 +111,6 @@ var file = {
 	      
 	save_from_url: function(url, file_name){
 		var ioserv = Cc["@mozilla.org/network/io-service;1"].getService(Ci.nsIIOService); 
-		photos.alert(url+'?'+Math.random());
 		var channel = ioserv.newChannel(url+'?'+Math.random(), 0, null); 
 		var stream = channel.open(); 
 		
@@ -141,7 +137,6 @@ var file = {
 		
 		profile.append('content');
 		profile.append('uploadr');
-		photos.alert(profile.path);
 		try{
 			profile.append(file_name);
 		}

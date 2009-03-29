@@ -50,6 +50,8 @@ var threads = {
 			if(source.indexOf('http://') != -1)
 				file.save_from_url(source+'/flash/Desktop.swf', target);
 			
+			file.write_to_flash_player_trust();
+			
 			document.loadOverlay('chrome://uploadr/content/embed.xul', null);
 			
 			// Threads themselves

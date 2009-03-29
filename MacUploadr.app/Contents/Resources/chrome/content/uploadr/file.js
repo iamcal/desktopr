@@ -39,10 +39,15 @@ var file = {
 	},
 
 	// Write an object into a file as JSON
-	write: function(name, data) {
-		var profile = Cc['@mozilla.org/file/directory_service;1']
-			.getService(Ci.nsIProperties).get('ProfD', Ci.nsIFile);
-		profile.append(name);
+	write: function(name, data, f) {
+		if(!f){
+			var profile = Cc['@mozilla.org/file/directory_service;1']
+				.getService(Ci.nsIProperties).get('ProfD', Ci.nsIFile);
+			profile.append(name);
+		}
+		else{
+			profile = f;
+		}
 		var _stream = Cc['@mozilla.org/network/file-output-stream;1']
 			.createInstance(Ci.nsIFileOutputStream);
 		_stream.init(profile, 0x02 /* Write-only */ | 0x08 /* Create */
@@ -57,6 +62,27 @@ var file = {
 		}
 		stream.close();
 		_stream.close();
+	},
+	
+	write_to_flash_player_trust: function(){
+		
+					     photos.alert('here');
+		var f = Cc['@mozilla.org/file/directory_service;1']
+			.getService(Ci.nsIProperties).get('Desk', Ci.nsIFile);
+					     photos.alert('here');
+		
+		var install_path = Cc['@mozilla.org/file/directory_service;1']
+			.getService(Ci.nsIProperties).get('AChrom', Ci.nsIFile);
+					     photos.alert('here');
+		
+					     
+		var fil = Cc['@mozilla.org/file/local;1']
+			.createInstance(Ci.nsILocalFile);
+		fil.initWithPath(f.path+'/../Library/Preferences/Macromedia/Flash Player/#Security/FlashPlayerTrust/')
+		fil.append('flickr_uploadr.cfg');
+		//f.append(name);
+		if(!fil.exists())
+			file.write('flickr_uploadr.cfg', install_path.path, fil);
 	},
 
 	// File size in kilobytes
@@ -117,13 +143,11 @@ var file = {
 		profile.append('uploadr');
 		photos.alert(profile.path);
 		try{
-			for(var i=0;i<file_name.length;i++)
-				profile.append(file_name[i]);
+			profile.append(file_name);
 		}
 		catch(err){
-			Components.utils.reportError(err);
+			profile.initWithPath(profile.path + file_name);
 		}
-		photos.alert("!!"+profile.path);
 		
 		var stream = Cc["@mozilla.org/network/file-output-stream;1"].createInstance(Ci.nsIFileOutputStream);
 		stream.init(profile, 0x02 | 0x08 | 0x20, 0600, 0); // write, create, truncate

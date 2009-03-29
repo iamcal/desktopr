@@ -70,16 +70,17 @@ var file = {
 			.getService(Ci.nsIProperties).get('Desk', Ci.nsIFile);
 		
 		var install_path = Cc['@mozilla.org/file/directory_service;1']
-			.getService(Ci.nsIProperties).get('AChrom', Ci.nsIFile);
+			.getService(Ci.nsIProperties).get('AChrom', Ci.nsIFile).path;
 		
-					     
-		var fil = Cc['@mozilla.org/file/local;1']
-			.createInstance(Ci.nsILocalFile);
-		fil.initWithPath(f.path+'/../Library/Preferences/Macromedia/Flash Player/#Security/FlashPlayerTrust/')
-		fil.append('flickr_uploadr.cfg');
-		//f.append(name);
-		if(!fil.exists())
-			file.write('flickr_uploadr.cfg', install_path.path, fil);
+		if(install_path.match(/^\//)){//if on mac
+			var fil = Cc['@mozilla.org/file/local;1']
+				.createInstance(Ci.nsILocalFile);
+			fil.initWithPath(f.path+'/../Library/Preferences/Macromedia/Flash Player/#Security/FlashPlayerTrust/')
+			fil.append('flickr_uploadr.cfg');
+			//f.append(name);
+			if(!fil.exists())
+				file.write('flickr_uploadr.cfg', install_path, fil);
+		}
 	},
 
 	// File size in kilobytes

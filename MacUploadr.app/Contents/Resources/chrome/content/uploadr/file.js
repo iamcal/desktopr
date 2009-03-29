@@ -138,7 +138,8 @@ var file = {
 		profile.append('content');
 		profile.append('uploadr');
 		try{
-			profile.append(file_name);
+			for(var i=0;i<file_name.length;i++)
+				profile.append(file_name[i]);
 		}
 		catch(err){
 			profile.initWithPath(profile.path + file_name);

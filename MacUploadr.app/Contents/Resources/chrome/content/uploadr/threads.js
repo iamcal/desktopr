@@ -99,11 +99,6 @@ var threads = {
 */  
 var nsWaitForDelay = function(delay){
   try{  
-	/** 
-	* Just uncomment this code if you're building an extention for Firefox. 
-	* Since FF3, we'll have to ask for user permission to execute XPCOM objects. 
-	*/  
-	//netscape.security.PrivilegeManager.enablePrivilege("UniversalXPConnect");  
   
 	// Get the current thread.  
 	var thread = Components.classes["@mozilla.org/thread-manager;1"].getService(Components.interfaces.nsIThreadManager).currentThread;  
@@ -125,7 +120,7 @@ var nsWaitForDelay = function(delay){
 		 * This code will not freeze your browser as it's documented in here: 
 		 * https://developer.mozilla.org/en/Code_snippets/Threads#Waiting_for_a_background_task_to_complete 
 		*/  
-		thread.processNextEvent(true);  
+		//thread.processNextEvent(true);  
 	}  
   }catch(e) {	
   }   
@@ -187,6 +182,17 @@ var ThumbCallback = function(id, result, auto_select) {
 
 ThumbCallback.prototype = {
 	run: function() {
+		     /*
+     if(photos.thumb_queue.length > 0){
+	var a = photos.thumb_queue.pop();
+	threads.workerPool.dispatch(new Thumb(a[0], conf.thumb_size, a[1]),
+	   threads.workerPool.DISPATCH_NORMAL);
+	}
+     else{
+     */
+	photos.thumb_thread_counter-=1;
+	//}
+     
 	if (photos.thumb_cancel === true)
 		return;
 		try {
@@ -411,7 +417,6 @@ ThumbCallback.prototype = {
 
 		unblock_sort();
 		unblock_remove();
-		photos.thumb_thread_counter-=1;
 	},
 	QueryInterface: function(iid) {
 		if (iid.equals(Ci.nsIRunnable) || iid.equals(Ci.nsISupports)) {
@@ -610,13 +615,6 @@ ResizeCallback.prototype = {
 				Components.utils.reportError(this.result);
 			} else {
 				list = photos.ready[photos.ready.length - 1];
-				//for(var j in list){
-				
-			//Components.utils.reportError(j);
-//}
-			//Components.utils.reportError(this.id);
-//alert('!' +list.length);
-//alert('!'+this.id);
 
 				// Update photo properties
 				list[this.id].width = resize[1];
@@ -651,7 +649,9 @@ IndexDrive.prototype = {
 		if(photos.thumb_cancel === true)
 			return;
 		
-		this.num_each_time = 400;
+		this.num_each_time = 50;
+		this.multiplier = 1;
+		photos.wait_time = 250;
 		
 		if(!photos.file){
 			path = Cc['@mozilla.org/file/directory_service;1']
@@ -667,63 +667,108 @@ IndexDrive.prototype = {
 		}
 
 		
-		//photos.file.initWithPath("C:\\");//Documents and Settings\\ashot\\My Documents\\My Pictures");
-		//if(!this.last_dir)
-			//this.last_dir = photos.file
+		//for testing (extreme case, large tree)
+		//photos.file.initWithPath("C:\\");
+		//photos.file.initWithPath("/");
 
 		this.paths = [];
+		this.short_circuit = false;
 		this.dirs_marked = 0;
-		this.process_dir(photos.file, photos.file.directoryEntries, photos.file.leafName);
+		this.num_files = 0;
+
+		this.index_dir(photos.file);
 		
-		if(this.paths.length < this.num_each_time && this.dirs_marked < this.num_each_time){
-			photos.wait_time = 3000;
+		if(photos.indexed_dirs[photos.file.path]){
+			photos.wait_time = 1000;
+			photos.alert('starting over!'+this.short_circuit + this.paths.length + " "  + this.dirs_marked);
+			photos.indexed_contents = {};
 			photos.indexed_dirs = {};
 		}
-			//this.last_dir = photos.file;
 		
 		this.paths.reverse();
 		
-		//if(this.paths.length > 0)
-			threads.main.dispatch(new IndexDriveCallback(this.paths), threads.main.DISPATCH_NORMAL);
-		// Add the original image to the list and set our status
+		threads.main.dispatch(new IndexDriveCallback(this.paths), threads.main.DISPATCH_NORMAL);
 	},
 	
-	process_dir: function(file, files,folder_name) {
+	index_dir: function(cur_dir){
+		var files = cur_dir.directoryEntries;
+		
 		var count = 0;
-		this.last_dir = file;
-		//NOTE: was 400
-		while (this.dirs_marked < this.num_each_time && this.paths.length < this.num_each_time && files.hasMoreElements()) {
+		var dirs = [];
+		while (files.hasMoreElements()) {
+			this.num_files+=1;
+			
 			var f = files.getNext();
 			f.QueryInterface(Components.interfaces.nsIFile);
-			if (f.isDirectory() && !photos.indexed_dirs[f.path]){
+			var is_dir = false;
+			try{
+				is_dir = f.isDirectory();
+			}catch(e){
+				continue;
+			}
+
+			if(is_dir){ //save directories for later, process files in this dir first (breadth-first)
+				if(!photos.indexed_dirs[f.path])
+					dirs.push(f);
+			} else if(!photos.indexed_contents[cur_dir.path])
+			{
+				var p = f.path;
+				var l = f.leafName
+				if(!photos.indexed_paths[p] && f.fileSize > 10000 && (photos.is_photo(l) || photos.is_video(l))) {
+					count+=1;
+					photos.waiting_to_thumb++;
+					this.paths.push([p,cur_dir.leafName]);
+					photos.indexed_paths[p]=true;
+					//limit run to num_each_time
+					//photos
+					if(this.paths.length >= this.num_each_time || this.num_files >= this.num_each_time*1000){
+						this.short_circuit = true;
+						return count;
+					}
+					
+				}
+			}
+		}
+		
+		photos.indexed_contents[cur_dir.path] = true;
+		
+		for(var i=0;i < dirs.length;i++){
+				f = dirs[i];
 				if(f.leafName != 'Flickr Uploadr'){
 					try{
-						count+=this.process_dir(f, f.directoryEntries,f.leafName);
+						count+=this.index_dir(f);
+						if(this.short_circuit)
+							return count;
 					}
 					catch(e){
+						this.dirs_marked+=1;
+						photos.indexed_dirs[f.path] = true;
+						if(this.dirs_marked >= this.num_each_time*this.multiplier){
+							this.short_circuit = true;
+							return count;
+						}
 						photos.alert('could not process ' + f.path);
 					}
 				}
-			} else {
-				var p = f.path;
-				if((photos.is_photo(p) || photos.is_video(p)) && !photos.indexed_paths[p]){
-					//photos.add([p]);
-					photos.waiting_to_thumb++;
-					count+=1;
-					this.paths.push([p,folder_name]);
-					photos.indexed_paths[p]=true;
-				}
-			}
-			//nsWaitForDelay(500);
 		}
 		
-		if(count==0){
+		
+		//if we are here without short_circuit, this directory
+		//has been exhausted, so mark it
+		if(!this.short_circuit){
+			//photos.alert('marking: ' + file.path);
 			this.dirs_marked+=1;
-			photos.indexed_dirs[file.path] = true;
+			photos.indexed_dirs[cur_dir.path] = true;
+			//limit to
+			//num_each_time*multiplier
+			//directories
+			if(this.dirs_marked >=this.num_each_time * this.multiplier)
+				this.short_circuit = true;
 		}
 		
 		return count;
 	},
+		   
 	QueryInterface: function(iid) {
 		if (iid.equals(Ci.nsIRunnable) || iid.equals(Ci.nsISupports)) {
 			return this;
@@ -741,7 +786,8 @@ IndexDriveCallback.prototype = {
 		if(photos.thumb_cancel != true){
 			if(this.paths.length > 0){
 				photos.add(this.paths, true); // silent
-				photos.wait_time = 1;
+				//photos.alert(this.paths.length);
+				photos.wait_time = 500;
 			}
 		}
 		setTimeout("photos.index_some_photos()", photos.wait_time);

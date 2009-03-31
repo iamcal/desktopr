@@ -25,10 +25,14 @@ var photos = {
 	batch_size: 0,
 	calling_swf: false,
 	to_call_swf: [],
-	wait_time: 1,
+	wait_time: 2000,
+	thumb_queue: [],
+	thumb_thread_counter: 0,
 	waiting_to_thumb: 0,
 	waiting_on_thumb: {},
 	indexed_paths: {},
+	indexed_contents: {},
+	added_paths: {},
 	indexed_dirs: {},
 	flash: {},
 	thumb_cancel: false,
@@ -84,6 +88,7 @@ var photos = {
         },
 		     
 	index_some_photos: function(){
+		   //photos.alert('start..');
 		threads.indexer.dispatch(new IndexDrive(), threads.worker.DISPATCH_NORMAL);
 	},
 	      
@@ -335,7 +340,7 @@ var photos = {
 		var to_flash = [];
 		block_normalize();
 		var ext_list = [];
-		var currentPathsLists = photos.list.map(function(x) {return x.path;});
+		//var currentPathsLists = photos.list.map(function(x) {return x.path;});
 		
 		for (var i = ii-1; i >= 0; --i) {
 			var p = 'object' == typeof paths[i][0] ? paths[i][0].path : paths[i][0];
@@ -347,7 +352,7 @@ var photos = {
 					.getFileFromURLSpec(p).path;
 			
 			}
-			if(currentPathsLists.indexOf(p) === -1) {
+			if(photos.added_paths[p]!=true) {
 			    var P = photos._add(p, paths[i][1]);
 			    ext_list.push(P);
 			    to_flash.push([P,paths[i][1]]);
@@ -364,6 +369,18 @@ var photos = {
 		
 		
 		photos.call_swf('add_files', [to_flash]);
+		
+		//if(photos.thumb_thread_counter < 1){
+		for(var i=0;i<to_flash.length;i++){
+			threads.workerPool.dispatch(new Thumb(to_flash[i][0].id, conf.thumb_size, to_flash[i][0].path),
+			   threads.workerPool.DISPATCH_NORMAL);
+		}
+		//}
+		/*
+		else{
+			photos.thumb_queue.push([id,path]);
+		}
+		*/
 
 		// Do extension stuff after we've added all of the photos but
 		// before the list we've saved potentially becomes invalid
@@ -406,6 +423,7 @@ var photos = {
 
 	},
 	
+	//simple_add:function(
 	_add: function(path, folder_name) {
 		block_remove();
 		block_sort();
@@ -445,8 +463,9 @@ var photos = {
 		//threads.workers[0].dispatch(new Thumb(id, conf.thumb_size, path),
 			//threads.worker.DISPATCH_NORMAL);
 			//
-		threads.workerPool.dispatch(new Thumb(id, conf.thumb_size, path),
-		    threads.workerPool.DISPATCH_NORMAL);
+		
+		
+		
 		
 		
 		//threads.worker.dispatch(new Thumb(id, conf.thumb_size, path),
@@ -464,7 +483,7 @@ var photos = {
 	},
 	      
 	alert: function(s){
-		Components.utils.reportError(String(s));
+		//Components.utils.reportError(String(s));
 	},
 
 	// Remove selected photos
@@ -876,8 +895,10 @@ var photos = {
 		*/
 		
 
-		if(obj.indexed_paths)
-			photos.indexed_paths = obj.indexed_paths;
+		//if(obj.indexed_paths)
+			//photos.indexed_paths = obj.indexed_paths;
+		for(var i=0;i<photos.list.length;i++)
+			photos.added_paths[photos.list[i].path] = true;
 		
 		
 		if(obj.list)
@@ -996,7 +1017,7 @@ var photos = {
 			//sort: photos.sort,
 			//sets: meta.sets,
 			list: photos.list,
-			indexed_paths:photos.indexed_paths,
+			//indexed_paths:photos.indexed_paths,
 			//flash:photos.the_swf.get_flash_obj()//photos.flash
 			flash:photos.call_swf('get_flash_obj', [])//photos.flash
 			//waiting_on_thumb:waiting_on_thumb
@@ -1019,12 +1040,19 @@ var photos = {
 
 	// Decide if a given path is a photo
 	is_photo: function(path) {
-		return /\.(jpe?g|tiff?|gif|png|bmp)$/i.test(path);
+			  if(!path) return false;
+			  var ext = path.substring(path.lastIndexOf('.')+1, path.length).toLowerCase();
+				  return ext == "jpeg" || ext == "jpg" || ext == "gif";
+			  
+		//return /\.(jpe?g|tiff?|gif|png|bmp)$/i.test(path);
 	},
 
 	// Similarly, is it a video
 	is_video: function(path) {
-		return /\.(mp4|mpe?g|avi|wmv|mov|dv|3gp|m4v)$/i.test(path);
+		  if(!path) return false;
+		  var ext = path.substring(path.lastIndexOf('.')+1, path.length).toLowerCase();
+		  return ext == 'mp4' || ext == 'mpg' || ext == 'mpeg' || ext == 'avi' || ext == 'dv' || ext == 'm4v' || ext == '3gp' || ext == 'mov' ||ext == 'wmv';
+		//return /\.(mp4|mpe?g|avi|wmv|mov|dv|3gp|m4v)$/i.test(path);
 	}
 
 };

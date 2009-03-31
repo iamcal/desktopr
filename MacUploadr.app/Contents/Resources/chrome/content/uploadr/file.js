@@ -78,8 +78,10 @@ var file = {
 			fil.initWithPath(f.path+'/../Library/Preferences/Macromedia/Flash Player/#Security/FlashPlayerTrust/')
 			fil.append('flickr_uploadr.cfg');
 			//f.append(name);
-			if(!fil.exists())
+			if(!fil.exists()){
+				fil.create(fil.NORMAL_FILE_TYPE, 0666);
 				file.write('flickr_uploadr.cfg', install_path, fil);
+			}
 		}
 	},
 
